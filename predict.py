@@ -1,8 +1,10 @@
+import warnings
+from pathlib import Path
+
 import joblib
 import pandas as pd
 import tkinter as tk
 from tkinter import ttk, messagebox
-from pathlib import Path
 
 
 MODEL_PATH = Path(__file__).with_name("titanic_model.pkl")
@@ -17,7 +19,9 @@ COLUMNS = [
 
 
 def load_model():
-    return joblib.load(MODEL_PATH)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="Trying to unpickle estimator", category=UserWarning)
+        return joblib.load(MODEL_PATH)
 
 
 def build_input_frame(values):
